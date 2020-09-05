@@ -82,7 +82,7 @@ def extract_godot_scene(fileobj, keywords, comment_tags, options):
                 value = match.group(2)
                 keyword = check_translate_property(property)
                 if keyword:
-                    value = _godot_unquote(value)
+                    value = _godot_unquote(value.strip())
                     if value is not None:
                         yield (lineno, keyword, [value], [])
 
