@@ -17,9 +17,8 @@ Usage
 
 Using a mapping file like this::
 
-    [python: **.gd]
+    [javascript: **.cs]
     encoding = utf-8
-    extract_messages = tr
 
     [godot_scene: **.tscn]
     encoding = utf-8
@@ -29,7 +28,7 @@ Using a mapping file like this::
 
 you can extract messages to be translated from both your ``.gd`` and ``.tscn`` files using::
 
-    pybabel extract -F babel_mapping_file -k Label/text -k Resource/catchphrase -k tr -o translations.pot .
+    pybabel extract -F babelrc -k LineEdit -k text -k window_title -k dialog_text -k Translate -o messages.pot .
 
 You can then create ``.po`` files from the POT catalog using `Poedit <https://poedit.net/>`_, or online services  such as `Crowdin <https://crowdin.com/>`_, `Transifex <https://www.transifex.com/>`_, or `Weblate <https://weblate.org/>`_.
 
