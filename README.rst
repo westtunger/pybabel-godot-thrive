@@ -1,14 +1,16 @@
-Babel Godot plugin
-==================
+Babel Godot - Thrive plugin
+===========================
 
 This is a plugin for `Babel <http://babel.pocoo.org/>`_, the internationalization library, that adds support for scene files from the `Godot game engine <https://godotengine.org/>`_.
+
+Extended specifically for Thrive.
 
 Installation
 ------------
 
 Install Babel and this plugin::
 
-    pip install Babel Babel-Godot
+    pip install Babel Babel-Thrive
 
 Usage
 -----

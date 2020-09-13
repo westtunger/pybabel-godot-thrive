@@ -4,13 +4,13 @@ from setuptools import setup
 
 
 setup(
-    name='Babel-Godot',
+    name='Babel-Thrive',
     version='1.0',
-    description='Plugin for Babel to support Godot scene files (.tscn)',
-    author='Remi Rampin',
-    author_email='remirampin@gmail.com',
+    description='Plugin for Babel to support Godot scene files (.tscn) extended for Thrive',
+    author='Remi Rampin (original), Nicolas Viseur (fork)',
+    author_email='westtunger@gmail.com',
     license='BSD',
-    url='https://github.com/remram44/pybabel-godot',
+    url='https://github.com/westtunger/pybabel-godot',
 
     classifiers=[
         'Development Status :: 5 - Production/Stable',
