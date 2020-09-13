@@ -6,7 +6,7 @@ __version__ = '1.0'
 
 _godot_node = re.compile(r'^\[node name="([^"]+)" (?:type="([^"]+)")?')
 _godot_property_str = re.compile(r'^([A-Za-z0-9_]+)\s*=\s*(".+)$')
-
+_string_number = re.compile(r'^[\+\-\*\/\%\.\s]*\d*[\+\-\*\/\%\.\s]*\d*[\+\-\*\/\%\.\s]*\d*$')
 
 def _godot_unquote(string):
     if string[0] != '"' or string[-1] != '"':
@@ -78,13 +78,26 @@ def extract_godot_scene(fileobj, keywords, comment_tags, options):
             # Currently in a node, check properties
             match = _godot_property_str.match(line)
             if match:
+                if check_for_placeholder(fileobj, lineno+1, encoding):
+                    continue
+
                 property = match.group(1)
                 value = match.group(2)
                 keyword = check_translate_property(property)
                 if keyword:
                     value = _godot_unquote(value.strip())
+                    if _string_number.match(value):
+                        continue
                     if value is not None:
                         yield (lineno, keyword, [value], [])
+
+def check_for_placeholder(fileobj, lineno, encoding):
+    for no, line in enumerate(fileobj, start=lineno):
+        line = line.decode(encoding)
+        if 'PLACEHOLDER' in line:
+            return True
+        elif line.startswith('['):
+            return False
 
 
 def extract_godot_resource(fileobj, keywords, comment_tags, options):
