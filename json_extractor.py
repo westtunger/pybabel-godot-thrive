@@ -18,6 +18,7 @@ class JsonExtractor(object):
         self.is_value=False
         self.gettext_mode=False
         self.current_key = None
+        self.in_array = False
         self.results=[]
         self.token_params={}
 
@@ -35,13 +36,21 @@ class JsonExtractor(object):
     def with_separator(self,token):
         self.state='value'
 
+    def start_array(self):
+        self.in_array = True
+
+    def end_array(self):
+        self.in_array = False
+        self.end_pair()
+
     def end_pair(self,add_gettext_object=False):
         if self.token_to_add:
             if not self.gettext_mode or ( self.gettext_mode and add_gettext_object):
                 self.add_result(self.token_to_add)
 
-        self.current_key=None
-        self.state='key'
+        if not self.in_array:
+            self.current_key=None
+            self.state='key'
 
     def end_object(self):
         self.end_pair(add_gettext_object=True)
@@ -79,10 +88,14 @@ class JsonExtractor(object):
             if token.type == 'operator':
                 if token.value == '{':
                     self.start_object()
+                elif token.value =='[':
+                    self.start_array()
                 elif token.value ==':':
                     self.with_separator(token)
                 elif token.value == '}':
                     self.end_object()
+                elif token.value ==']':
+                    self.end_array()
                 elif token.value == ',':
                     self.end_pair()
 
@@ -93,7 +106,7 @@ class JsonExtractor(object):
                     if self.current_key==JSON_GETTEXT_KEYWORD:
                         self.gettext_mode=True
                 else:
-                    if self.current_key == "name":
+                    if self.current_key in ("name", "Messages", "LeftTexts", "RightTexts"):
                         self.token_to_add=token
 
         return self.results
