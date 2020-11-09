@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name='Babel-Thrive',
-    version='1.3',
+    version='1.4',
     description='Plugin for Babel to support Godot scene files (.tscn) extended for Thrive',
     author='Remi Rampin (original), Nicolas Viseur (fork)',
     author_email='westtunger@gmail.com',
@@ -28,7 +28,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*',
-    py_modules=['babel_godot'],
+    py_modules=['babel_godot', 'json_extractor'],
 
     entry_points="""
     [babel.extractors]
