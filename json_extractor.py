@@ -106,7 +106,7 @@ class JsonExtractor(object):
                     if self.current_key==JSON_GETTEXT_KEYWORD:
                         self.gettext_mode=True
                 else:
-                    if self.current_key in ("name", "Messages", "LeftTexts", "RightTexts"):
+                    if self.current_key.lower() in ("groupname", "displayname", "name", "messages", "lefttexts", "righttexts"):
                         self.token_to_add=token
 
         return self.results
