@@ -7,7 +7,7 @@ setup(
     name='Babel-Thrive',
     version='1.5',
     description='Plugin for Babel to support Godot scene files (.tscn) extended for Thrive',
-    author='Remi Rampin (original), Nicolas Viseur (fork)',
+    author='Remi Rampin (original), Nicolas Viseur and Henri Hyyryläinen (fork)',
     author_email='westtunger@gmail.com',
     license='BSD',
     url='https://github.com/Revolutionary-Games/pybabel-godot-thrive',

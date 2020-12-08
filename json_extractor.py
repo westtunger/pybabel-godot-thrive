@@ -19,6 +19,7 @@ class JsonExtractor(object):
         self.gettext_mode=False
         self.current_key = None
         self.in_array = False
+        self.nested_in_array = []
         self.results=[]
         self.token_params={}
 
@@ -32,6 +33,12 @@ class JsonExtractor(object):
     def start_object(self):
         self.gettext_mode=False
         self.state='key'
+
+        # Things will be incorrect if an object is contained in an array, so
+        # we use a stack of states to return to like this in order to support
+        # that kind of JSON structures
+        self.nested_in_array.append(self.in_array)
+        self.in_array=False
 
     def with_separator(self,token):
         self.state='value'
@@ -56,6 +63,8 @@ class JsonExtractor(object):
         self.end_pair(add_gettext_object=True)
         self.gettext_mode=False
         self.state='end'
+
+        self.in_array = self.nested_in_array.pop()
 
     def add_result(self,token):
         value=unquote_string(token.value)
