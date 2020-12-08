@@ -108,6 +108,8 @@ def extract_godot_scene(fileobj, keywords, comment_tags, options):
                     if remainder is None:  # Un-terminated string
                         current_string = [value]
                     elif not remainder.strip():
+                        if _string_number.match(value):
+                            continue
                         yield (lineno, keyword, [value], [])
                     else:
                         raise ValueError("Trailing data after string")
