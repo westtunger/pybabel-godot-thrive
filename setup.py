@@ -5,12 +5,12 @@ from setuptools import setup
 
 setup(
     name='Babel-Thrive',
-    version='1.4',
+    version='1.5',
     description='Plugin for Babel to support Godot scene files (.tscn) extended for Thrive',
     author='Remi Rampin (original), Nicolas Viseur (fork)',
     author_email='westtunger@gmail.com',
     license='BSD',
-    url='https://github.com/westtunger/pybabel-godot',
+    url='https://github.com/Revolutionary-Games/pybabel-godot-thrive',
 
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -25,6 +25,7 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*',
