@@ -1,6 +1,12 @@
 from babel.messages.jslexer import tokenize, unquote_string
 
 
+# This helper is copied to all necessary files because once again python imports are being a pain
+def reopen_normal_read(file_obj, encoding):
+    """Re-open a file obj in plain read mode"""
+    return open(file_obj.name, "r", encoding=encoding)
+
+
 class ActiveCall:
     def __init__(self, name):
         self.name = name
@@ -9,6 +15,7 @@ class ActiveCall:
 
     def valid(self):
         return self.name and self.current_value
+
 
 class CSharpExtractor(object):
     def __init__(self, data):
@@ -39,7 +46,7 @@ class CSharpExtractor(object):
         )
         self.results.append(result)
 
-    def get_lines_data(self, encoding):
+    def get_lines_data(self):
         """
         Returns string:line_numbers list
         Since all strings are unique it is OK to get line numbers this way.
@@ -47,7 +54,7 @@ class CSharpExtractor(object):
         """
         trigger_call_prime = False
 
-        for token in tokenize(self.data.decode(encoding), jsx=False):
+        for token in tokenize(self.data, jsx=False):
             call_primed = trigger_call_prime
             trigger_call_prime = False
 
@@ -83,10 +90,11 @@ def extract_csharp(file_obj, keywords, comment_tags, options):
     """
     Custom C# extract to fix line numbers for Windows
     """
-    data = file_obj.read()
+    with reopen_normal_read(file_obj, options.get('encoding', 'utf-8')) as f:
+        data = f.read()
     extractor = CSharpExtractor(data)
 
-    for item in extractor.get_lines_data(options.get('encoding', 'utf-8')):
+    for item in extractor.get_lines_data():
         function = item['function_name']
 
         if function not in keywords:
