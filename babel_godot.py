@@ -1,12 +1,11 @@
 import re
 
-
 __version__ = '1.0'
-
 
 _godot_node = re.compile(r'^\[node name="([^"]+)" (?:type="([^"]+)")?')
 _godot_property_str = re.compile(r'^([A-Za-z0-9_]+)\s*=\s*(".+)$')
 _string_number = re.compile(r'^[\+\-\*\/\%\.\s]*\d*[\+\-\*\/\%\.\s]*\d*[\+\-\*\/\%\.\s]*\d*$')
+
 
 def _godot_unquote(string):
     result = []
