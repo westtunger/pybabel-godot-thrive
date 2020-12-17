@@ -23,6 +23,7 @@ class JsonExtractor(object):
         self.results=[]
         self.token_params={}
 
+    # TODO: fix the duplicate name between this and the other add_result
     def add_result(self,token):
         value=unquote_string(token.value)
         if value not in self.results:
@@ -83,15 +84,13 @@ class JsonExtractor(object):
         self.token_to_add=None
         self.token_params={}
 
-    def get_lines_data(self):
+    def get_lines_data(self, encoding):
         """
         Returns string:line_numbers list
         Since all strings are unique it is OK to get line numbers this way.
         Since same string can occur several times inside single .json file the values should be popped(FIFO) from the list
         :rtype: list
         """
-
-        encoding = 'utf-8'
 
         for token in tokenize(self.data.decode(encoding)):
             if token.type == 'operator':
@@ -126,7 +125,7 @@ def extract_json(fileobj, keywords, comment_tags, options):
     """
     data=fileobj.read()
     json_extractor=JsonExtractor(data)
-    strings_data=json_extractor.get_lines_data()
+    strings_data=json_extractor.get_lines_data(options.get('encoding', 'utf-8'))
 
     for item in strings_data:
         messages = [item['content']]
