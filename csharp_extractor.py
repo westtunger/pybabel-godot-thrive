@@ -1,38 +1,43 @@
 from babel.messages.jslexer import tokenize, unquote_string
 
 
+class ActiveCall:
+    def __init__(self, name):
+        self.name = name
+        self.current_value = None
+        self.value_start_line = 0
+
+    def valid(self):
+        return self.name and self.current_value
+
 class CSharpExtractor(object):
     def __init__(self, data):
-        self.state = 'start'
         self.data = data
 
         self.current_name = None
-        self.current_value = None
-        self.value_start_line = 0
+        self.active_calls = []
 
         self.parenthesis_level = 0
 
         self.results = []
 
     def start_call(self):
-        self.state = 'call'
+        self.active_calls.append(ActiveCall(self.current_name))
+        self.current_name = None
 
     def end_call(self):
-        self.state = 'skipping'
+        call = self.active_calls.pop()
 
-        if self.current_name and self.current_value:
-            self.add_result()
+        if call.valid():
+            self.add_result(call)
 
-    def add_result(self):
+    def add_result(self, call):
         result = dict(
-            line_number=self.value_start_line,
-            content=self.current_value,
-            function_name=self.current_name
+            line_number=call.value_start_line,
+            content=call.current_value,
+            function_name=call.name
         )
         self.results.append(result)
-
-        self.current_name = None
-        self.current_value = None
 
     def get_lines_data(self, encoding):
         """
@@ -42,13 +47,13 @@ class CSharpExtractor(object):
         """
         trigger_call_prime = False
 
-        for token in tokenize(self.data.decode(encoding)):
+        for token in tokenize(self.data.decode(encoding), jsx=False):
             call_primed = trigger_call_prime
             trigger_call_prime = False
 
             if token.type == 'operator':
                 if token.value == '(':
-                    if self.state != 'call' and call_primed:
+                    if call_primed:
                         self.start_call()
                     else:
                         self.parenthesis_level += 1
@@ -57,17 +62,19 @@ class CSharpExtractor(object):
                         self.end_call()
                     else:
                         self.parenthesis_level -= 1
-            elif token.type == 'name' and self.state != 'call':
+            elif token.type == 'name':
                 trigger_call_prime = True
                 self.current_name = token.value
-            elif token.type == 'string' and self.state == 'call':
+            elif token.type == 'string' and len(self.active_calls) > 0:
                 string_value = unquote_string(token.value)
 
-                if self.current_value is None:
-                    self.current_value = string_value
-                    self.value_start_line = token.lineno
+                call = self.active_calls[-1]
+
+                if call.current_value is None:
+                    call.current_value = string_value
+                    call.value_start_line = token.lineno
                 else:
-                    self.current_value += string_value
+                    call.current_value += string_value
 
         return self.results
 
