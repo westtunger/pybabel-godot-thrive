@@ -17,7 +17,7 @@ Usage
 
 Using a mapping file like this::
 
-    [javascript: **.cs]
+    [csharp: **.cs]
     encoding = utf-8
 
     [godot_scene: **.tscn]
@@ -34,3 +34,14 @@ you can extract messages to be translated from both your ``.gd`` and ``.tscn`` f
     pybabel extract -F babelrc -k LineEdit -k text -k window_title -k dialog_text -k Translate -o messages.pot .
 
 You can then create ``.po`` files from the POT catalog using `Poedit <https://poedit.net/>`_, or online services  such as `Crowdin <https://crowdin.com/>`_, `Transifex <https://www.transifex.com/>`_, or `Weblate <https://weblate.org/>`_.
+
+Developing
+----------
+
+requirements-dev.txt contains packages that help with local development.
+
+
+To install for local testing::
+
+    pip install . --user
+
