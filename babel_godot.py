@@ -78,7 +78,7 @@ def extract_godot_scene(fileobj, keywords, comment_tags, options):
             elif remainder.strip():
                 raise ValueError("Trailing data after string")
             else:
-                yield (lineno, keyword, ['\n'.join(current_string)], [])
+                yield (lineno + 1, keyword, ['\n'.join(current_string)], [])
                 current_string = None
             continue
 
@@ -110,7 +110,7 @@ def extract_godot_scene(fileobj, keywords, comment_tags, options):
                     elif not remainder.strip():
                         if _string_number.match(value):
                             continue
-                        yield (lineno, keyword, [value], [])
+                        yield (lineno + 1, keyword, [value], [])
                     else:
                         raise ValueError("Trailing data after string")
 
@@ -160,7 +160,7 @@ def extract_godot_resource(fileobj, keywords, comment_tags, options):
             elif remainder.strip():
                 raise ValueError("Trailing data after string")
             else:
-                yield (lineno, keyword, ['\n'.join(current_string)], [])
+                yield (lineno + 1, keyword, ['\n'.join(current_string)], [])
                 current_string = None
             continue
 
@@ -177,6 +177,6 @@ def extract_godot_resource(fileobj, keywords, comment_tags, options):
                 if remainder is None:  # Un-terminated string
                     current_string = [value]
                 elif not remainder.strip():
-                    yield (lineno, keyword, [value], [])
+                    yield (lineno + 1, keyword, [value], [])
                 else:
                     raise ValueError("Trailing data after string")
