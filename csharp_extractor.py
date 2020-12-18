@@ -8,10 +8,11 @@ def reopen_normal_read(file_obj, encoding):
 
 
 class ActiveCall:
-    def __init__(self, name):
+    def __init__(self, name, parenthesis_level):
         self.name = name
         self.current_value = None
         self.value_start_line = 0
+        self.stored_parenthesis_level = parenthesis_level
 
     def valid(self):
         return self.name and self.current_value
@@ -29,11 +30,14 @@ class CSharpExtractor(object):
         self.results = []
 
     def start_call(self):
-        self.active_calls.append(ActiveCall(self.current_name))
+        self.active_calls.append(ActiveCall(self.current_name, self.parenthesis_level))
+        self.parenthesis_level = 0
         self.current_name = None
 
     def end_call(self):
         call = self.active_calls.pop()
+
+        self.parenthesis_level = call.stored_parenthesis_level
 
         if call.valid():
             self.add_result(call)

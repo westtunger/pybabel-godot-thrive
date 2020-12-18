@@ -119,6 +119,7 @@ class JsonExtractor(object):
                     if self.current_key == JSON_GETTEXT_KEYWORD:
                         self.gettext_mode = True
                 else:
+                    # TODO: auto-detecting items to extract through the keywords passed to extract_json would be very nice
                     if self.current_key.lower() in (
                     "groupname", "displayname", "name", "messages", "lefttexts", "righttexts"):
                         self.token_to_add = token
