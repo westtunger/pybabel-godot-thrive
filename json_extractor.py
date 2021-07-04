@@ -121,7 +121,7 @@ class JsonExtractor(object):
                 else:
                     # TODO: auto-detecting items to extract through the keywords passed to extract_json would be very nice
                     if self.current_key.lower() in (
-                    "groupname", "displayname", "name", "messages", "lefttexts", "righttexts"):
+                    "groupname", "displayname", "name", "message", "messages"):
                         self.token_to_add = token
 
         return self.results
