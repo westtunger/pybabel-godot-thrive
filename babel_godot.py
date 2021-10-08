@@ -5,7 +5,7 @@ __version__ = '1.0'
 _godot_node = re.compile(r'^\[node name="([^"]+)" (?:type="([^"]+)")?')
 _godot_property_str = re.compile(r'^([A-Za-z0-9_]+)\s*=\s*(".+)$')
 _string_number = re.compile(r'^[\+\-\*\/\%\.\s]*\d*[\+\-\*\/\%\.\s]*\d*[\+\-\*\/\%\.\s]*\d*$')
-
+_godot_option_button = re.compile(r'^(items)\s*=\s*\[\s*(.+)\s*\]$')
 
 def _godot_unquote(string):
     result = []
@@ -112,6 +112,32 @@ def extract_godot_scene(fileobj, keywords, comment_tags, options):
                         yield (lineno + 1, keyword, [value], [])
                     else:
                         raise ValueError("Trailing data after string")
+            else:
+                # Options button items line handling
+                match = _godot_option_button.match(line)
+                if match:
+                    if check_for_placeholder(lines[lineno:], encoding):
+                        continue
+
+                    raw_values = list(map(str.strip, match.group(2).split(",")))
+
+                    # The format seems to that each option entry is 5 items
+                    if len(raw_values) % 5 != 0:
+                        print(f"not divisible (size: {len(raw_values)}: {raw_values}")
+                        continue
+
+                    for i in range(0, len(raw_values), 5):
+                        option_entry = raw_values[i:i+5]
+
+                        if option_entry[0][0] == '"' or option_entry[0][0] == '\'':
+                            value = option_entry[0][1:-1]
+                        else:
+                            value = option_entry[0]
+
+                        if _string_number.match(value):
+                            continue
+
+                        yield (lineno + 1, keyword, [value], [])
 
 
 def check_for_placeholder(lines, encoding):

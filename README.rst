@@ -45,3 +45,16 @@ To install for local testing::
 
     pip install . --user
 
+
+Publishing
+----------
+
+A good guide: https://realpython.com/pypi-publish-python-package/#building-your-package
+
+Basically just:
+```sh
+pip install twine
+python setup.py sdist
+twine check dist/*
+twine upload dist/*
+```
