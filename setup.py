@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name='Babel-Thrive',
-    version='1.10',
+    version='1.11',
     description='Plugin for Babel to support Godot scene files (.tscn) extended for Thrive',
     author='Remi Rampin (original), Nicolas Viseur and Henri Hyyryläinen (fork)',
     author_email='westtunger@gmail.com',
