@@ -1,6 +1,9 @@
 Babel Godot - Thrive plugin
 ===========================
 
+This has been replaced by a C# implementation directly in the `Thrive repository <https://github.com/Revolutionary-Games/Thrive>`_
+-------------------------------------------------------------------------------------------------------------------------------
+
 This is a plugin for `Babel <http://babel.pocoo.org/>`_, the internationalization library, that adds support for scene files from the `Godot game engine <https://godotengine.org/>`_.
 
 Extended specifically for Thrive, including and slightly editing the plugin `pybabel-json <https://github.com/tigrawap/pybabel-json/>`_.
